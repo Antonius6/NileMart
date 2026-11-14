@@ -1,26 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Nile Mart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            width: 400px;
+        }
+        label {
+            display: block;
+            margin-bottom: 15px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        span {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
 
-<form th:action="@{/products}" th:object ="${product}" method="post">
-    <label>SKU      <input  th:field ="*{sku}"></label>
-    <span th:if="${#fields.hasErrors('sku')}" th:errors ="*{sku}"></span>
-    <label>Name     <input  th:field ="*{name}"></label>
-    <span th:if="${#fields.hasErrors('name')}" th:errors ="*{name}"></span>
-    <label>Category <input  th:field ="*{category}"></label>
-    <span th:if="${#fields.hasErrors('category')}" th:errors ="*{category}"></span>
-    <label>Price    <input  th:field ="*{price}"></label>
-    <span th:if="${#fields.hasErrors('price')}" th:errors ="*{price}"></span>
-    <label>Stock    <input  th:field ="*{inStock}"></label>
-    <span th:if="${#fields.hasErrors('inStock')}" th:errors ="*{inStock}"></span>
+<form th:action="@{/products}" th:object="${product}" method="post">
+    <label>SKU      <input th:field="*{sku}"></label>
+    <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}"></span>
+
+    <label>Name     <input th:field="*{name}"></label>
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+
+    <label>Category
+        <select th:field="*{category}">
+            <option value="">Select sub-category</option>
+            <option th:each="cat : ${subCategories}" th:value="${cat.slug}" th:text="${cat.name}"></option>
+        </select>
+    </label>
+    <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
+
+    <label>Brand
+        <select th:field="*{brandSlug}">
+            <option value="">No brand</option>
+            <option th:each="b : ${activeBrands}" th:value="${b.slug}" th:text="${b.name}"></option>
+        </select>
+    </label>
+    <span th:if="${#fields.hasErrors('brandSlug')}" th:errors="*{brandSlug}"></span>
+
+    <label>Price    <input th:field="*{price}"></label>
+    <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+
+    <label>Stock    <input th:field="*{inStock}"></label>
+    <span th:if="${#fields.hasErrors('inStock')}" th:errors="*{inStock}"></span>
+
     <button type="submit">Save product</button>
 </form>
-<a  th:href="@{/products}">Back to products</a>
-
+<br>
+<a th:href="@{/products}">Back to products</a>
 
 </body>
 </html>

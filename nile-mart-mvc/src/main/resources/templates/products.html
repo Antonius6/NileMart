@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Nile-Mart</title>
@@ -13,6 +13,21 @@
 
         h1 {
             color: #333;
+        }
+
+        nav {
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
         }
 
         table {
@@ -40,16 +55,27 @@
 
 <body>
 
+<nav>
+    <a th:href="@{/products}">Products</a>
+    <a th:href="@{/categories}">Categories</a>
+    <a th:href="@{/brands}">Brands</a>
+</nav>
+
 <h1>Available Products</h1>
+
+<p>
+    <a th:href="@{/products/new}">Add New Product</a>
+</p>
 
 <table>
     <thead>
     <tr>
         <th>SKU</th>
         <th>Name</th>
+        <th>Category</th>
+        <th>Brand</th>
         <th>Price</th>
         <th>Stock</th>
-        <th>Category</th>
     </tr>
     </thead>
 
@@ -57,11 +83,14 @@
     <tr th:each="product : ${availableProducts}">
         <td th:text="${product.sku}"></td>
         <td th:text="${product.name}"></td>
+
+        <td th:text="${categoryNames[product.category]}"></td>
+        <td th:text="${product.brandSlug != null and !product.brandSlug.isEmpty() ? brandNames[product.brandSlug] : '-'}"></td>
         <td th:text="${product.price}"></td>
         <td th:text="${product.inStock}"></td>
-        <td th:text="${product.category}"></td>
     </tr>
     </tbody>
 </table>
+
 </body>
 </html>

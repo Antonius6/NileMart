@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nile-Mart</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        span {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Add New Category</h1>
+
+<form th:action="@{/categories}" th:object="${category}" method="post">
+    <label>Name
+        <input th:field="*{name}">
+    </label>
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+
+    <label>Slug
+        <input th:field="*{slug}">
+    </label>
+    <span th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}"></span>
+
+    <label>Parent Category
+        <select th:field="*{parentSlug}">
+            <option value="">None (top level)</option>
+            <option th:each="cat : ${toplevel}" th:value="${cat.slug}" th:text="${cat.name}"></option>
+        </select>
+    </label>
+    <span th:if="${#fields.hasErrors('parentSlug')}" th:errors="*{parentSlug}"></span>
+
+    <label>Display Order
+        <input type="number" th:field="*{displayOrder}">
+    </label>
+    <span th:if="${#fields.hasErrors('displayOrder')}" th:errors="*{displayOrder}"></span>
+
+    <label>
+        <input type="checkbox" th:field="*{active}"> Active
+    </label>
+
+    <button type="submit">Save Category</button>
+</form>
+
+<br>
+<a th:href="@{/categories}">Back to categories</a>
+
+</body>
+</html>
